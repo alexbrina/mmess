@@ -38,7 +38,7 @@ namespace ConsoleApp
             var oQueues = new Option<string[]>(new string[] { "--queues", "-q" });
             oQueues.Argument.Arity = ArgumentArity.OneOrMore;
             sub.AddOption(oQueues);
-            sub.AddOption(new Option<int>(new string[] { "--interval", "-i" }, () => 2000, "Handling sleep interval (milliseconds)."));
+            sub.AddOption(new Option<int>(new string[] { "--interval", "-i" }, () => 1000, "Handling sleep interval (milliseconds)."));
             sub.Handler = CommandHandler.Create<string[], int, string, int, string, string>(Subscribe);
             cmd.AddCommand(sub);
 
