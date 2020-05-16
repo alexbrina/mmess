@@ -115,7 +115,7 @@ namespace ConsoleApp
             {
                 if (!Exiting)
                 {
-                    WaitAutoRecovery(cc, cs.Model, RecoveryAttempts);
+                    WaitAutoRecovery(cc, cs.Model);
                 }
             };
 
@@ -269,7 +269,7 @@ namespace ConsoleApp
             {
                 if (retry > RecoveryAttempts)
                 {
-                    Console.WriteLine("Max wait times reached. Sorry, I tried.");
+                    Console.WriteLine("Max recovery attempts reached. Sorry, I tried.");
                     Environment.Exit(1);
                 }
                 var wait = Convert.ToInt32(RecoveryInterval.TotalSeconds);
