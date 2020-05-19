@@ -22,7 +22,7 @@ namespace ConsoleApp
         {
             var cmd = new RootCommand("RabbitMQ Mass Messaging");
 
-            // Global options
+            // Setup global options
             cmd.AddGlobalOption(new Option<string>(new string[] { "--host", "-hn" }, () => "localhost"));
             cmd.AddGlobalOption(new Option<int>(new string[] { "--port", "-hp" }, () => -1));
             cmd.AddGlobalOption(new Option<string>(new string[] { "--user", "-u" }, () => "guest"));
@@ -30,9 +30,8 @@ namespace ConsoleApp
             cmd.AddGlobalOption(new Option<int>(new string[] { "--recovery-interval", "-ri" }, () => 15000, "Network recovery interval (milliseconds)."));
             cmd.AddGlobalOption(new Option<byte>(new string[] { "--recovery-attempts", "-ra" }, () => 30, "Network recovery attempts (0 to 255)."));
 
-            // Publish command options
+            // Setup publish command options
             var pub = new Command("publish");
-
             var oExchange = new Option<string>(new string[] { "--exchange", "-e" });
             oExchange.Argument.Arity = ArgumentArity.ExactlyOne;
             pub.AddOption(oExchange);
@@ -41,9 +40,8 @@ namespace ConsoleApp
             pub.Handler = CommandHandler.Create<string, int, int>(Publish);
             cmd.AddCommand(pub);
 
-            // Subscribe command options
+            // Setup subscribe command options
             var sub = new Command("subscribe");
-
             var oQueues = new Option<string[]>(new string[] { "--queues", "-q" });
             oQueues.Argument.Arity = ArgumentArity.OneOrMore;
             sub.AddOption(oQueues);
@@ -51,6 +49,7 @@ namespace ConsoleApp
             sub.Handler = CommandHandler.Create<string[], int>(Subscribe);
             cmd.AddCommand(sub);
 
+            // Read global options
             var arguments = cmd.Parse(args);
             Host = arguments.CommandResult.ValueForOption<string>("--host");
             Port = arguments.CommandResult.ValueForOption<int>("--port");
@@ -58,6 +57,9 @@ namespace ConsoleApp
             Pass = arguments.CommandResult.ValueForOption<string>("--pass");
             RecoveryInterval = TimeSpan.FromMilliseconds(Math.Abs(arguments.CommandResult.ValueForOption<int>("--recovery-interval")));
             RecoveryAttempts = arguments.CommandResult.ValueForOption<byte>("--recovery-attempts");
+
+            Console.WriteLine(RecoveryInterval);
+            Console.WriteLine(RecoveryAttempts);
 
             // Invoke execution
             cmd.InvokeAsync(args).Wait();
@@ -132,9 +134,13 @@ namespace ConsoleApp
                     }
                     var nli = msg.IndexOf("\n");
                     msg = msg.Substring(0, nli < 0 ? msg.Length : nli);
+                    
+                    if (cs.Model != cn)
+                    {
+                        Console.WriteLine(" ******************** NOT EQUAL ******************** ");
+                    }
 
-                    if (consumersToQueues.TryGetValue(ea.ConsumerTag, out string queue)
-                        && cs.Model == cn)
+                    if (consumersToQueues.TryGetValue(ea.ConsumerTag, out string queue))
                     {
                         Thread.Sleep(interval);
                         Console.Write($"{msg} received from {queue}! (#{ea.DeliveryTag})");

@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mmess", "mmess.csproj", "{5FC0159E-ECEB-4485-BB3F-FE20D31EB442}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "otc-messaging", "otc-messaging", "{E01FEA7B-E274-43B1-BA24-7DAFA7A62C29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rabbitmq-client", "rabbitmq-client", "{E6548E05-6117-4092-8101-4ED4A2293F7C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mmess-otc", "otc-messaging\mmess-otc.csproj", "{8C4DCBAA-5480-43C0-BCD8-0129A17DCCAB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otc.Messaging.Abstractions", "..\otc-messaging\Source\Otc.Messaging.Abstractions\Otc.Messaging.Abstractions.csproj", "{13D6A3B6-BCB0-4837-9945-D145154F07C9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otc.Messaging.RabbitMQ", "..\otc-messaging\Source\Otc.Messaging.RabbitMQ\Otc.Messaging.RabbitMQ.csproj", "{F24C3011-EE84-4BB3-B053-9B030F46EE77}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mmess", "rabbitmq-client\mmess.csproj", "{F15BA34F-8525-4E17-8189-2119EBDB2887}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +21,31 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5FC0159E-ECEB-4485-BB3F-FE20D31EB442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5FC0159E-ECEB-4485-BB3F-FE20D31EB442}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5FC0159E-ECEB-4485-BB3F-FE20D31EB442}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5FC0159E-ECEB-4485-BB3F-FE20D31EB442}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C4DCBAA-5480-43C0-BCD8-0129A17DCCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C4DCBAA-5480-43C0-BCD8-0129A17DCCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C4DCBAA-5480-43C0-BCD8-0129A17DCCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C4DCBAA-5480-43C0-BCD8-0129A17DCCAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13D6A3B6-BCB0-4837-9945-D145154F07C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13D6A3B6-BCB0-4837-9945-D145154F07C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13D6A3B6-BCB0-4837-9945-D145154F07C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13D6A3B6-BCB0-4837-9945-D145154F07C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F24C3011-EE84-4BB3-B053-9B030F46EE77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F24C3011-EE84-4BB3-B053-9B030F46EE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F24C3011-EE84-4BB3-B053-9B030F46EE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F24C3011-EE84-4BB3-B053-9B030F46EE77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15BA34F-8525-4E17-8189-2119EBDB2887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15BA34F-8525-4E17-8189-2119EBDB2887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15BA34F-8525-4E17-8189-2119EBDB2887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15BA34F-8525-4E17-8189-2119EBDB2887}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8C4DCBAA-5480-43C0-BCD8-0129A17DCCAB} = {E01FEA7B-E274-43B1-BA24-7DAFA7A62C29}
+		{13D6A3B6-BCB0-4837-9945-D145154F07C9} = {E01FEA7B-E274-43B1-BA24-7DAFA7A62C29}
+		{F24C3011-EE84-4BB3-B053-9B030F46EE77} = {E01FEA7B-E274-43B1-BA24-7DAFA7A62C29}
+		{F15BA34F-8525-4E17-8189-2119EBDB2887} = {E6548E05-6117-4092-8101-4ED4A2293F7C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C3F00B51-94AF-4FBD-B0C4-2E20F867530D}
