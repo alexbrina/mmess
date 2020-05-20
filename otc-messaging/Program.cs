@@ -8,6 +8,7 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
@@ -50,7 +51,7 @@ namespace ConsoleApp
             // Broker
             IServiceCollection services = new ServiceCollection();
             var serviceProvider = services
-                .AddLogging(b => b.AddConsole().SetMinimumLevel(LogLevel.Trace))
+                .AddLogging(b => b.AddConsole().SetMinimumLevel(LogLevel.Warning))
                 .AddRabbitMQ(new RabbitMQConfiguration
                 {
                     Hosts = new List<string> { arguments.CommandResult.ValueForOption<string>("--host") },
@@ -71,27 +72,41 @@ namespace ConsoleApp
         {
             size = Math.Abs(size);
             interval = Math.Abs(interval);
-            var i = 1;
+            var tasks = new List<Task>();
 
-            // Wait until key press
-            while (!Console.KeyAvailable)
+            void action(int j)
             {
-                var pub = Broker.CreatePublisher();
-                try
+                tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    var message = $"Message {DateTimeOffset.Now:yyyy'-'MM'-'dd' 'HH':'mm':'ss'.'fffffff}";
-                    pub.Publish(Encoding.UTF8.GetBytes((message + "\n" + new string('$', size)).Substring(0, size)), exchange);
-                    Console.WriteLine($"{message} sent! (#{i++})");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Publish Exception :: " + ex.GetType());
-                    throw;
-                }
+                    var i = 1;
+                    while (true)
+                    {
+                        try
+                        {
+                            using (var pub = Broker.CreatePublisher())
+                            {
+                                var message = $"Message {DateTimeOffset.Now:yyyy'-'MM'-'dd' 'HH':'mm':'ss'.'fffffff}";
+                                pub.Publish(Encoding.UTF8.GetBytes((message + "\n" + new string('$', size)).Substring(0, size)), exchange);
+                                Console.WriteLine($"{message} sent! (#{j}:#{i++})");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Publish Exception\n" + ex);
+                        }
 
-                Thread.Sleep(interval);
-                pub.Dispose();
+                        Thread.Sleep(interval);
+                    }
+                }));
             }
+
+            for (int j = 0; j < 500; j++)
+            {
+                action(j);
+                Thread.Sleep(10);
+            }
+
+            Task.WaitAll(tasks.ToArray());
         }
 
         public static void Subscribe(string[] queues, int interval)
