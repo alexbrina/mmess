@@ -12,6 +12,7 @@ namespace ConsoleApp
     public static class Program
     {
         private static string Host;
+        private static string VirtualHost;
         private static int Port;
         private static string User;
         private static string Pass;
@@ -24,6 +25,7 @@ namespace ConsoleApp
 
             // Setup global options
             cmd.AddGlobalOption(new Option<string>(new string[] { "--host", "-hn" }, () => "localhost"));
+            cmd.AddGlobalOption(new Option<string>(new string[] { "--vhost", "-vh" }, () => "/"));
             cmd.AddGlobalOption(new Option<int>(new string[] { "--port", "-hp" }, () => -1));
             cmd.AddGlobalOption(new Option<string>(new string[] { "--user", "-u" }, () => "guest"));
             cmd.AddGlobalOption(new Option<string>(new string[] { "--pass", "-p" }, () => "guest"));
@@ -52,6 +54,7 @@ namespace ConsoleApp
             // Read global options
             var arguments = cmd.Parse(args);
             Host = arguments.CommandResult.ValueForOption<string>("--host");
+            VirtualHost = arguments.CommandResult.ValueForOption<string>("--vhost");
             Port = arguments.CommandResult.ValueForOption<int>("--port");
             User = arguments.CommandResult.ValueForOption<string>("--user");
             Pass = arguments.CommandResult.ValueForOption<string>("--pass");
@@ -218,6 +221,7 @@ namespace ConsoleApp
             var cf = new ConnectionFactory
             {
                 HostName = Host,
+                VirtualHost = VirtualHost,
                 Port = Port,
                 UserName = User,
                 Password = Pass,
